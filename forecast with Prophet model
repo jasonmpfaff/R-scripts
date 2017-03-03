@@ -1,0 +1,20 @@
+install.packages("prophet")
+library(prophet)
+library(dplyr)
+df<-read.csv('oil.csv')
+head(df)
+##format data into ds/y format##
+newdf <- df %>%mutate(y = log(y))
+newDates<-as.Date(newdf$ds,"%m/%d/%Y")
+head(newDates)
+anewdf<-data.frame(newDates, newdf$y)
+colnames(anewdf) <- c("ds", "y")
+head(anewdf)
+##model##
+m <- prophet(anewdf)
+future <- make_future_dataframe(m, periods = 365)
+tail(future)
+future
+forecast <- predict(m, future)
+tail(forecast[c('ds', 'yhat', 'yhat_lower', 'yhat_upper')])
+plot(m, forecast)
