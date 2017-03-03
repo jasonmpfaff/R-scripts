@@ -1,9 +1,10 @@
 install.packages("prophet")
 library(prophet)
 library(dplyr)
+##download data from https://www.quandl.com/data/ODA/POILWTI_USD-WTI-Crude-Oil-Price ##
+##format data into ds/y format##
 df<-read.csv('oil.csv')
 head(df)
-##format data into ds/y format##
 newdf <- df %>%mutate(y = log(y))
 newDates<-as.Date(newdf$ds,"%m/%d/%Y")
 head(newDates)
